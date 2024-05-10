@@ -350,7 +350,7 @@ const Home: React.FC = () => {
 				)}
 
 				<h2 className="text-xl font-bold mb-4 text-orange-500">Providers</h2>
-
+				<button className="btn btn-secondary">Cool</button>
 				{/* Provider List */}
 				<div className="grid grid-cols-2 gap-4">
 					{Object.entries(providerCounts).map(([providerName, count]) => (
