@@ -15,6 +15,7 @@ import googleIcon from '../public/google.png';
 import youtubeIcon from '../public/youtube.jpg';
 import britboxIcon from '../public/britbox.png';
 import bingeIcon from '../public/binge.png';
+import { json } from 'stream/consumers';
 
 interface DataItem {
 	Title: string;
@@ -37,66 +38,75 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const storedMovies = localStorage.getItem('mergedMovies');
-			const storedTvShows = localStorage.getItem('mergedTvShows');
-			const storedCounts = localStorage.getItem('mergedCounts');
-			const storedMaxProvider = localStorage.getItem('maxProvider');
-			const storedMaxCount = localStorage.getItem('maxCount');
-			if (!storedMovies || !storedTvShows || !storedCounts || !storedMaxProvider || !storedMaxCount) {
-				try {
-					const primeData = await fetchPrimeData();
-					const netflixData = await fetchNetflixData();
+			const storedMovies = JSON.parse(localStorage.getItem('mergedMovies') || '[]');
+			const storedTvShows = JSON.parse(localStorage.getItem('mergedTvShows') || '[]');
+			const storedCounts = JSON.parse(localStorage.getItem('mergedCounts') || '[]');
+			const storedMaxProvider = JSON.parse(localStorage.getItem('maxProvider') || '[]');
+			const storedMaxCount = JSON.parse(localStorage.getItem('maxCount') || '[]');
+			const primeDataLocal = localStorage.getItem('primeUploadedFile');
+			const netflixDataLocal = localStorage.getItem('netflixUploadedFile');
 
-					const mergedMovies = [...movieData, ...primeData.movies, ...(netflixData.formattedMovies ?? [])];
-					const mergedTvShows = [...tvShowData, ...primeData.tvShows, ...(netflixData.formattedTvShows ?? [])];
-					const mergedCounts = mergeProviderCounts(providerCounts, primeData.mergedCounts, netflixData.mergedCounts);
+			if (storedMovies.length === 0 || storedTvShows.length === 0 || storedCounts.length === 0 || storedMaxProvider.length === 0 || storedMaxCount.length === 0) {
+				if (primeDataLocal && netflixDataLocal) {
+					try {
+						const primeData = await fetchPrimeData(primeDataLocal);
+						const netflixData = await fetchNetflixData(netflixDataLocal);
 
-					setMovieData(mergedMovies);
-					setTvShowData(mergedTvShows);
-					setProviderCounts(mergedCounts);
+						const mergedMovies = [...movieData, ...primeData.movies, ...(netflixData.formattedMovies ?? [])];
+						const mergedTvShows = [...tvShowData, ...primeData.tvShows, ...(netflixData.formattedTvShows ?? [])];
+						const mergedCounts = mergeProviderCounts(providerCounts, primeData.mergedCounts, netflixData.mergedCounts);
 
-					localStorage.setItem('mergedMovies', JSON.stringify(mergedMovies));
-					localStorage.setItem('mergedTvShows', JSON.stringify(mergedTvShows));
-					localStorage.setItem('mergedCounts', JSON.stringify(mergedCounts));
+						setMovieData(mergedMovies);
+						setTvShowData(mergedTvShows);
+						setProviderCounts(mergedCounts);
 
-					// Find the provider with the highest count
-					let maxCount = 0;
-					let maxProvider = '';
-					for (const [providerName, count] of Object.entries(mergedCounts)) {
-							if (count > maxCount) {
-									maxCount = count;
-									maxProvider = providerName;
-							}
+						localStorage.setItem('mergedMovies', JSON.stringify(mergedMovies));
+						localStorage.setItem('mergedTvShows', JSON.stringify(mergedTvShows));
+						localStorage.setItem('mergedCounts', JSON.stringify(mergedCounts));
+
+						// Find the provider with the highest count
+						let maxCount = 0;
+						let maxProvider = '';
+						for (const [providerName, count] of Object.entries(mergedCounts)) {
+								if (count > maxCount) {
+										maxCount = count;
+										maxProvider = providerName;
+								}
+						}
+						setHighestProvider(maxProvider);
+						setHighestProviderCount(maxCount);
+
+						localStorage.setItem('maxProvider', JSON.stringify(maxProvider));
+						localStorage.setItem('maxCount', JSON.stringify(maxCount));
+					} catch (error) {
+						console.error('Error fetching data:', error);
 					}
-					setHighestProvider(maxProvider);
-					setHighestProviderCount(maxCount);
-
-					localStorage.setItem('maxProvider', JSON.stringify(maxProvider));
-					localStorage.setItem('maxCount', JSON.stringify(maxCount));
-				} catch (error) {
-					console.error('Error fetching data:', error);
 				}
 			} else {
-				setMovieData(JSON.parse(storedMovies));
-				setTvShowData(JSON.parse(storedTvShows));
-				setProviderCounts(JSON.parse(storedCounts));
-				setHighestProvider(JSON.parse(storedMaxProvider));
-				setHighestProviderCount(JSON.parse(storedMaxCount));
+				setMovieData(storedMovies);
+				setTvShowData(storedTvShows);
+				setProviderCounts(storedCounts);
+				setHighestProvider(storedMaxProvider);
+				setHighestProviderCount(storedMaxCount);
+				console.log('storedcounts', storedCounts)
 			}
 		}
 		fetchData();
 	}, []);
 
-	const fetchPrimeData = async () => {
+	const fetchPrimeData = async (primeData: string) => {
 		try {
 			const response = await fetch('/api/prime', {
-				method: 'GET',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ primeData })
 			});
 			if (!response.ok) {
 				throw new Error('Failed to fetch data');
 			}
 			const jsonData: DataItem[] = await response.json();
-
 			const filteredData = jsonData.filter(item => {
 				const [day, month, year] = item.Date.split('/');
 				const itemDate = new Date(`${year}-${month}-${day}`);
@@ -110,7 +120,6 @@ const Home: React.FC = () => {
 
 			const movies = filteredData.filter(item => !/Season\s\d+/i.test(item.Title) && !/\s*-\s*SEASON\s*\d+/i.test(item.Title));
 			const tvShows = filterTvShows(filteredData, 'prime');
-
 			// Calculate counts for current data
 			const counts: { [providerName: string]: number } = {};
 
@@ -134,10 +143,14 @@ const Home: React.FC = () => {
 		}
 	};
 
-	const fetchNetflixData = async () => {
+	const fetchNetflixData = async (netflixData: string) => {
 		try {
 			const response = await fetch('/api/netflix', {
-				method: 'GET',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ netflixData })
 			});
 			if (!response.ok) {
 				throw new Error('Failed to fetch data');
@@ -154,10 +167,8 @@ const Home: React.FC = () => {
 
 				return itemDate >= twelveMonthsAgo && itemDate <= today;
 			});
-
-			const movies = filteredData.filter(item => !item.Title.includes('Season'));
+			const movies = filteredData.filter(item => item.Title && !item.Title.includes('Season') && !item.Title.includes('Limited Series') && !item.Title.includes(': Chapter') && !item.Title.includes(': Part') && !item.Title.includes(': Series') && !item.Title.includes(': Collection'));
 			const tvShows = filterTvShows(filteredData, 'netflix');
-
 			// Calculate counts for current data
 			const counts: { [providerName: string]: number } = {};
 
@@ -222,10 +233,9 @@ const Home: React.FC = () => {
 
 		data.forEach(item => {
 				let titleParts: string[] = [];
-				const separators = [': Season', ' - Season', ' – SEASON'];
-
-				for (const separator of separators) {
-						titleParts = provider === 'netflix' ? item.Title.split(separator) : item.Title.split(separator);
+				const separators = [': Season', ' - Season', ' – SEASON', ': Limited Series', ': Chapter', ': Part', ': Series', ': Collection'];
+			for (const separator of separators) {
+					titleParts = provider === 'netflix' ? item.Title.split(separator) : item.Title.split(separator);
 						if (titleParts.length > 1) {
 								// Found a valid split
 								break;
@@ -235,19 +245,17 @@ const Home: React.FC = () => {
 				if (titleParts && titleParts.length >= 2) {
 						const tvShowName = titleParts[0];
 
-						if (!tvShowsSet.has(tvShowName)) {
-								tvShowsSet.add(tvShowName);
+						if (!tvShowsSet.has(tvShowName) && tvShowName !== '') {
+							tvShowsSet.add(tvShowName);
 								tvShows.push({ Title: tvShowName, Date: item.Date });
 						}
 				}
 		});
 
 		return tvShows;
-}
-
+	};
 
 	const fetchProviders = async (title: string, mediaType: string): Promise<Provider[]> => {
-	// return [];
 		try {
 			const response = await fetch(`https://api.themoviedb.org/3/search/${mediaType}?query=${title}&include_adult=false&language=en-US&page=1&api_key=a0be022ea13fc1bb27bdfb6795b3537a`, {
 				method: 'GET',
@@ -286,7 +294,19 @@ const Home: React.FC = () => {
 			const addProviderIfNotEncountered = (provider: Provider) => {
 				const providerKey = `${provider.provider_name}_${provider.provider_id}_${title}`;
 				if (!encounteredProviders.has(providerKey)) {
-					if (provider.provider_name !== 'Netflix basic with Ads' && provider.provider_name !== 'Britbox Apple TV Channel') {
+					if (provider.provider_name === 'Amazon Prime Video'
+						|| provider.provider_name === 'Apple TV'
+						|| provider.provider_name === 'Amazon Video'
+						|| provider.provider_name === 'Google Play Movies'
+						|| provider.provider_name === 'Microsoft Store'
+						|| provider.provider_name === 'YouTube'
+						|| provider.provider_name === 'Telstra TV'
+						|| provider.provider_name === 'Fetch TV'
+						|| provider.provider_name === 'Stan'
+						|| provider.provider_name === 'Foxtel Now'
+						|| provider.provider_name === 'BINGE'
+						|| provider.provider_name === 'Netflix'
+					) {
 						providers.push(provider);
 						encounteredProviders.add(providerKey);
 					}
@@ -350,7 +370,7 @@ const Home: React.FC = () => {
 				)}
 
 				<h2 className="text-xl font-bold mb-4 text-orange-500">Providers</h2>
-				<button className="btn btn-secondary">Cool</button>
+
 				{/* Provider List */}
 				<div className="grid grid-cols-2 gap-4">
 					{Object.entries(providerCounts).map(([providerName, count]) => (

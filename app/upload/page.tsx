@@ -3,24 +3,36 @@
 import React, { useState, ChangeEvent } from 'react';
 
 const App: React.FC = () => {
-  const [docType, setDocType] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+	const [service, setService] = useState<string | null>(null);
+	// localStorage.clear();
+	console.log('local', localStorage)
+	const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target && event.target.files && event.target.files.length > 0) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				if (e.target) {
+					console.log('asdad');
+					localStorage.setItem(`${service}UploadedFile`, e.target.result as string);
+					setUploadSuccess(true);
+					console.log(localStorage);
+				}
+			};
+			reader.readAsText(event.target.files[0]);
+		}
+	};
 
-  const handleFileUpload = () => {
-    // Simulate file upload process
-    setLoading(true);
-    setTimeout(() => {
-      setUploadSuccess(true);
-      setLoading(false);
-    }, 2000); // Simulate 2 seconds delay
-  };
+	const handleServiceSelect = (service: string) => {
+		setService(service);
+		console.log('ser', service)
+	};
 
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      setDocType(event.target.files[0].type);
-    }
-  };
+	const handleLocalStorageClear = () => {
+		console.log('before', localStorage)
+		localStorage.clear();
+		console.log('after', localStorage)
+	};
 
   return (
     <div className="min-h-screen flex flex-col justify-evenly items-center">
@@ -31,8 +43,9 @@ const App: React.FC = () => {
 			<div className="flex flex-col justify-center items-center gap-12">
 				<input
 					type="file"
-					className="file-input file-input-bordered w-full max-w-xs"
-					disabled={!docType}
+					className="file-input file-input-bordered w-full max-w-xl"
+					onChange={handleFileUpload}
+					disabled={!service}
 				/>
 
 				{uploadSuccess && (
@@ -42,23 +55,21 @@ const App: React.FC = () => {
 				<div className="mt-8 space-x-4">
 					<button
 						className={`px-4 py-2 ${
-							docType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+							service === 'netflix'
 								? 'bg-blue-500 text-white'
 								: 'bg-gray-300 text-gray-600'
 						} rounded-lg`}
-						onClick={() =>
-							setDocType(
-								'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-							)
-						}
+						onClick={() => handleServiceSelect('netflix')}
 					>
 						Netflix
 					</button>
 					<button
 						className={`px-4 py-2 ${
-							docType === 'application/pdf' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
+							service === 'prime'
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-600'
 						} rounded-lg`}
-						onClick={() => setDocType('application/pdf')}
+						onClick={() => handleServiceSelect('prime')}
 					>
 						Prime
 					</button>
@@ -66,12 +77,18 @@ const App: React.FC = () => {
 
 			</div>
 
-			<div className="flex justify-center items-center">
+			<div className="flex justify-center items-center gap-3">
+				<button
+					className="mt-8 px-4 py-2 bg-blue-500 text-white rounded-lg"
+					onClick={handleLocalStorageClear}
+				>
+					Remove files
+				</button>
 				<button
 					className={`mt-8 px-4 py-2 bg-blue-500 text-white rounded-lg ${
 						!uploadSuccess && 'opacity-50 cursor-not-allowed'
 					}`}
-					onClick={handleFileUpload}
+					onClick={() => window.location.href='/'}
 					disabled={!uploadSuccess}
 				>
 					Get Results
