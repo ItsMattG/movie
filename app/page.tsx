@@ -7,12 +7,6 @@ import foxtelIcon from '../public/foxtel.png';
 import stanIcon from '../public/stan.png';
 import amazonPrimeIcon from '../public/amazon.jpg';
 import appleIcon from '../public/apple.png';
-import microsoftIcon from '../public/microsoft.png';
-import telstraIcon from '../public/telstra.png';
-import fetchIcon from '../public/fetch.jpg';
-import amazonIcon from '../public/amazon.png';
-import googleIcon from '../public/google.png';
-import youtubeIcon from '../public/youtube.jpg';
 import britboxIcon from '../public/britbox.png';
 import bingeIcon from '../public/binge.png';
 import { json } from 'stream/consumers';
@@ -85,7 +79,17 @@ const Home: React.FC = () => {
 			} else {
 				setMovieData(storedMovies);
 				setTvShowData(storedTvShows);
-				setProviderCounts(storedCounts);
+				const sortedCounts = Object.entries(storedCounts)
+					.map(([provider, count]) => ({ provider, count: Number(count) }))
+					.sort((a, b) => b.count - a.count);
+
+				console.log('stored', sortedCounts);
+				const sortedCountsObject = sortedCounts.reduce((obj: { [key: string]: number }, item) => {
+					obj[item.provider] = item.count;
+					return obj;
+				}, {});
+
+setProviderCounts(sortedCountsObject);
 				setHighestProvider(storedMaxProvider);
 				setHighestProviderCount(storedMaxCount);
 				console.log('storedcounts', storedCounts)
@@ -294,18 +298,14 @@ const Home: React.FC = () => {
 			const addProviderIfNotEncountered = (provider: Provider) => {
 				const providerKey = `${provider.provider_name}_${provider.provider_id}_${title}`;
 				if (!encounteredProviders.has(providerKey)) {
-					if (provider.provider_name === 'Amazon Prime Video'
-						|| provider.provider_name === 'Apple TV'
-						|| provider.provider_name === 'Amazon Video'
-						|| provider.provider_name === 'Google Play Movies'
-						|| provider.provider_name === 'Microsoft Store'
-						|| provider.provider_name === 'YouTube'
-						|| provider.provider_name === 'Telstra TV'
-						|| provider.provider_name === 'Fetch TV'
-						|| provider.provider_name === 'Stan'
+					if (
+						provider.provider_name === 'Netflix'
 						|| provider.provider_name === 'Foxtel Now'
+						|| provider.provider_name === 'Stan'
+						|| provider.provider_name === 'Amazon Prime Video'
+						|| provider.provider_name === 'Apple TV'
+						|| provider.provider_name === 'BritBox'
 						|| provider.provider_name === 'BINGE'
-						|| provider.provider_name === 'Netflix'
 					) {
 						providers.push(provider);
 						encounteredProviders.add(providerKey);
@@ -351,79 +351,55 @@ const Home: React.FC = () => {
 	};
 
 	return (
-		<div className="container mx-auto py-8">
-			<h1 className="text-3xl font-bold mb-4 text-orange-500">Streaming Platforms</h1>
+		<div className="flex flex-col justify-center container mx-auto py-8 h-screen w-1200">
+			<h1 className="text-4xl font-bold mb-4 text-orange-500">Streaming Platforms</h1>
 
-			<div className="container mx-auto py-8">
+			<div className="flex flex-col justify-between gap-4 container mx-auto py-8">
 				{highestProvider && (
 					<div className="mb-8">
-						<h1 className="text-2xl font-bold mb-2 text-orange-500">
-							Streaming platform with the Highest Movie/TV Show Count:
+						<h1 className="text-3xl font-bold mb-2 text-orange-500">
+							Recommended Streaming Platform based on data:
 						</h1>
-						<p>
-							{highestProvider} ({highestProviderCount})
-						</p>
-						<p className="font-bold text-orange-700">
-							You should use this information to save $$$
+						<p className="text-lg mb-2">
+							{highestProvider} is the best provider with {highestProviderCount} counts
 						</p>
 					</div>
 				)}
 
-				<h2 className="text-xl font-bold mb-4 text-orange-500">Providers</h2>
+				<h2 className="text-3xl font-bold mb-4 text-orange-500">Providers</h2>
 
 				{/* Provider List */}
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-2 gap-6 w-full">
 					{Object.entries(providerCounts).map(([providerName, count]) => (
-						<div key={providerName} className="flex items-center">
-							{providerName === 'Netflix' && <Image src={netflixIcon} alt="Netflix" className="w-12 h-12 mr-2" />}
-							{providerName === 'Foxtel Now' && <Image src={foxtelIcon} alt="Foxtel Now" className="w-12 h-12 mr-2" />}
-							{providerName === 'Stan' && <Image src={stanIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Amazon Prime Video' && <Image src={amazonPrimeIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Apple TV' && <Image src={appleIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Microsoft Store' && <Image src={microsoftIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Telstra TV' && <Image src={telstraIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Fetch TV' && <Image src={fetchIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Amazon Video' && <Image src={amazonIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'Google Play Movies' && <Image src={googleIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'YouTube' && <Image src={youtubeIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'BritBox' && <Image src={britboxIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							{providerName === 'BINGE' && <Image src={bingeIcon} alt="Stan" className="w-12 h-12 mr-2" />}
-							<span>{providerName}</span>
-							<span className="ml-2 text-gray-500">({count})</span>
+						<div key={providerName} className="grid grid-cols-8 gap-1 w-full">
+							<div className="col-span-1">
+								{providerName === 'Netflix' && <Image src={netflixIcon} alt="Netflix" className="w-12 h-12" />}
+								{providerName === 'Foxtel Now' && <Image src={foxtelIcon} alt="Foxtel Now" className="w-12 h-12" />}
+								{providerName === 'Stan' && <Image src={stanIcon} alt="Stan" className="w-12 h-12" />}
+								{providerName === 'Amazon Prime Video' && <Image src={amazonPrimeIcon} alt="Stan" className="w-12 h-12" />}
+								{providerName === 'Apple TV' && <Image src={appleIcon} alt="Stan" className="w-12 h-12" />}
+								{providerName === 'BritBox' && <Image src={britboxIcon} alt="Stan" className="w-12 h-12" />}
+								{providerName === 'BINGE' && <Image src={bingeIcon} alt="Stan" className="w-12 h-12" />}
+							</div>
+								<div className="flex flex-col w-full col-span-3">
+									<span>{providerName}</span>
+									{providerName === 'Netflix' && <span className="text-gray-500">$16.99 per month</span>}
+									{providerName === 'Foxtel Now' && <span className="text-gray-500">$45.00 per month</span>}
+									{providerName === 'Stan' && <span className="text-gray-500">$16.00 per month</span>}
+									{providerName === 'Amazon Prime Video' && <span className="text-gray-500">$9.99 per month</span>}
+									{providerName === 'Apple TV' && <span className="text-gray-500">$12.99 per month</span>}
+									{providerName === 'BritBox' && <span className="text-gray-500">$9.99 per month</span>}
+									{providerName === 'BINGE' && <span className="text-gray-500">$10.00 per month</span>}
+								</div>
+								<span className="flex text-gray-500 col-span-2 justify-center items-center">-</span>
+								<div className="flex w-full col-span-2 justify-center items-center">
+									<span className="text-gray-500">{count}</span>
+									<span className="text-gray-500">&nbsp;counts</span>
+								</div>
 						</div>
 					))}
 				</div>
 
-			</div>
-
-			{/* Movie List */}
-			<div>
-				<h2 className="text-xl font-bold mb-2 text-red-500">Movies</h2>
-				<div className="grid grid-cols-2 gap-4">
-					<div className="font-bold">Title</div>
-					<div className="font-bold">Date</div>
-					{movieData.map((item, index) => (
-						<React.Fragment key={index}>
-							<div>{item.Title}</div>
-							<div>{item.Date}</div>
-						</React.Fragment>
-					))}
-				</div>
-			</div>
-
-			{/* TV Show List */}
-			<div>
-				<h2 className="text-xl font-bold mb-2 pt-4 text-red-500">TV Shows</h2>
-				<div className="grid grid-cols-2 gap-4">
-					<div className="font-bold">Title</div>
-					<div className="font-bold">Date</div>
-					{tvShowData.map((item, index) => (
-						<React.Fragment key={index}>
-							<div>{item.Title}</div>
-							<div>{item.Date}</div>
-						</React.Fragment>
-					))}
-				</div>
 			</div>
 		</div>
 	);
