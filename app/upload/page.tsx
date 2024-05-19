@@ -6,6 +6,7 @@ import primeInstructions from './data/primeInstructions';
 const App: React.FC = () => {
 	const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 	const [uploadFailed, setUploadFailed] = useState<boolean>(false);
+	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [service, setService] = useState<string | null>(null);
 	const [isLocalStorageEmpty, setIsLocalStorageEmpty] = useState(true);
@@ -29,7 +30,7 @@ const App: React.FC = () => {
 	console.log('local', typeof window !== 'undefined' && window.localStorage ? window.localStorage : {});
 	const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target && event.target.files && event.target.files.length > 0) {
-			setFileName(event.target.files[0].name);
+			setFileName(event.target.files[0].name.replace('.csv', ''));
 			const reader = new FileReader();
 			reader.onload = function(e) {
 				if (e.target) {
@@ -40,6 +41,10 @@ const App: React.FC = () => {
 						setUploadSuccess(true);
 						setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
 						console.log('uipload', uploadSuccess)
+						const files = event.target.files;
+						if (files) {
+							setUploadedFiles(prevFiles => [...prevFiles, ...Array.from(files)]);
+						}
 					} catch (e) {
 						setUploadFailed(true);
 					}
@@ -61,6 +66,7 @@ const App: React.FC = () => {
 		localStorage.clear();
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
 		console.log('after', localStorage)
+		setUploadedFiles([]);
 	};
 
 	return (
@@ -96,6 +102,19 @@ const App: React.FC = () => {
 				>
 					Remove files
 				</button>
+
+				<div className="flex flex-col p-2 text-left rounded-lg w-full max-w-sm text-black">
+						<h3 className="text-md font-semibold text-secondary-text">Uploaded Files:</h3>
+						{uploadedFiles.length > 0 ? (
+								<ul>
+									{Array.from(uploadedFiles).map((file, index) => (
+											<li key={index}>{file.name.replace('.csv', '')}</li>
+									))}
+								</ul>
+						) : (
+								<p>No files uploaded.</p>
+						)}
+				</div>
 
 				{ (uploadSuccess || uploadFailed) && (
 					<div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
