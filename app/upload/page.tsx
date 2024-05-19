@@ -95,7 +95,7 @@ const App: React.FC = () => {
 				</div>
 
 				<button
-					className={`px-2 py-1 bg-button-color-secondary text-sm text-black rounded-lg ${
+					className={`px-2 py-1 bg-button-color-secondary text-sm text-main-text rounded-lg ${
 						isLocalStorageEmpty ? 'invisible' : 'block'
 					}`}
 					onClick={handleLocalStorageClear}
@@ -103,7 +103,7 @@ const App: React.FC = () => {
 					Remove files
 				</button>
 
-				<div className="flex flex-col p-2 text-left rounded-lg w-full max-w-sm text-black">
+				<div className="flex flex-col p-2 text-left rounded-lg w-full max-w-sm text-main-text">
 						<h3 className="text-md font-semibold text-secondary-text">Uploaded Files:</h3>
 						{uploadedFiles.length > 0 ? (
 								<ul>
@@ -206,7 +206,7 @@ const App: React.FC = () => {
 																		Prime
 																</button>
 																<button
-																		className="ml-auto text-black rounded-md self-start text-lg"
+																		className="ml-auto text-main-text rounded-md self-start text-lg"
 																		onClick={() => setIsInstructionsModalOpen(false)}
 																>
 																		X
@@ -236,7 +236,7 @@ const App: React.FC = () => {
 																		</p>
 																		<p className="text-md text-gray-500 mb-1">3. Click the button below which will copy a code snippet to your clipboard</p>
 																		<button
-																				className="mt-1 mb-2 bg-button-color text-black px-2 py-1 text-sm rounded"
+																				className="mt-1 mb-2 bg-button-color text-main-text px-2 py-1 text-sm rounded"
 																				onClick={() => navigator.clipboard.writeText(primeInstructions)}
 																		>
 																				Copy Code to Clipboard
@@ -260,7 +260,7 @@ const App: React.FC = () => {
 					className={`px-4 py-2 bg-button-color text-button-text text-2xl font-bold rounded-lg ${
 						isLocalStorageEmpty && 'opacity-50 cursor-not-allowed'
 					}`}
-					onClick={() => window.location.href='/'}
+					onClick={() => window.location.href='/results'}
 					disabled={isLocalStorageEmpty}
 				>
 					Get Results

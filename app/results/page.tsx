@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import netflixIcon from '../public/netflix.png';
-import foxtelIcon from '../public/foxtel.png';
-import stanIcon from '../public/stan.png';
-import amazonPrimeIcon from '../public/amazon.jpg';
-import appleIcon from '../public/apple.png';
-import britboxIcon from '../public/britbox.png';
-import bingeIcon from '../public/binge.png';
-import { json } from 'stream/consumers';
+import netflixIcon from '../../public/netflix.png';
+import foxtelIcon from '../../public/foxtel.png';
+import stanIcon from '../../public/stan.png';
+import amazonPrimeIcon from '../../public/amazon.jpg';
+import appleIcon from '../../public/apple.png';
+import britboxIcon from '../../public/britbox.png';
+import bingeIcon from '../../public/binge.png';
 
 interface DataItem {
 	Title: string;
@@ -404,7 +403,16 @@ setProviderCounts(sortedCountsObject);
 						))}
 					</div>
 
+
 				</div>
+					<div className="flex justify-center w-full">
+						<button
+							className="px-1 py-2 bg-button-color-secondary text-md font-semibold text-main-text rounded-lg w-1/5"
+							onClick={() => window.location.href='/upload'}
+						>
+							Back to upload
+						</button>
+					</div>
 			</div>
 		</div>
 	);
