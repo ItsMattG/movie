@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Poppins } from "next/font/google"
+import { Recursive } from "next/font/google"
 
 // const inter = Inter({ subsets: ["latin"] });
 
-const roboto = Poppins({
+const roboto = Recursive({
 	subsets: ['latin'],
-	weight: ['400', '700']
+	weight: ['300', '400', '500', '600', '700', '800', '900', '1000']
 });
 
 export const metadata: Metadata = {
