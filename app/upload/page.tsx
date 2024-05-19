@@ -70,9 +70,9 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col justify-evenly items-center bg-background-brown">
+		<div className="min-h-screen flex flex-col justify-evenly items-center bg-background-primary">
 			<div className="flex justify-center">
-				<h1 className="text-4xl mb-8 font-semibold text-main-text">Upload your document</h1>
+				<h1 className="text-4xl font-semibold text-main-text">Upload your document</h1>
 			</div>
 
 			<div className="flex flex-col justify-center items-center gap-4 w-6/12">
@@ -257,7 +257,7 @@ const App: React.FC = () => {
 
 			<div className="flex justify-center items-center gap-3">
 				<button
-					className={`mt-8 px-4 py-2 bg-button-color text-button-text text-2xl font-bold rounded-lg ${
+					className={`px-4 py-2 bg-button-color text-button-text text-2xl font-bold rounded-lg ${
 						isLocalStorageEmpty && 'opacity-50 cursor-not-allowed'
 					}`}
 					onClick={() => window.location.href='/'}

@@ -351,55 +351,60 @@ setProviderCounts(sortedCountsObject);
 	};
 
 	return (
-		<div className="flex flex-col justify-center container mx-auto py-8 h-screen w-1200">
-			<h1 className="text-4xl font-bold mb-4 text-orange-500">Streaming Platforms</h1>
+		<div className="h-screen flex items-center justify-center bg-background-primary px-8">
+			<div className="h-5/6 md:max-w-3xl sm:max-w-xl flex flex-col justify-evenly items-center">
+				<div className="flex justify-center">
+					<h1 className="text-5xl font-bold text-main-text">Streaming Platforms</h1>
+				</div>
 
-			<div className="flex flex-col justify-between gap-4 container mx-auto py-8">
 				{highestProvider && (
-					<div className="mb-8">
-						<h1 className="text-3xl font-bold mb-2 text-orange-500">
+					<div className="flex flex-col justify-between mx-auto w-full">
+						<h2 className="text-3xl font-semibold mb-2 text-secondary-text">
 							Recommended Streaming Platform based on data:
-						</h1>
-						<p className="text-lg mb-2">
+						</h2>
+						<p className="text-xl text-main-text font-normal">
 							{highestProvider} is the best provider with {highestProviderCount} counts
 						</p>
 					</div>
 				)}
 
-				<h2 className="text-3xl font-bold mb-4 text-orange-500">Providers</h2>
+				<div className="flex flex-col justify-between gap-4 mx-auto">
 
-				{/* Provider List */}
-				<div className="grid grid-cols-2 gap-6 w-full">
-					{Object.entries(providerCounts).map(([providerName, count]) => (
-						<div key={providerName} className="grid grid-cols-8 gap-1 w-full">
-							<div className="col-span-1">
-								{providerName === 'Netflix' && <Image src={netflixIcon} alt="Netflix" className="w-12 h-12" />}
-								{providerName === 'Foxtel Now' && <Image src={foxtelIcon} alt="Foxtel Now" className="w-12 h-12" />}
-								{providerName === 'Stan' && <Image src={stanIcon} alt="Stan" className="w-12 h-12" />}
-								{providerName === 'Amazon Prime Video' && <Image src={amazonPrimeIcon} alt="Stan" className="w-12 h-12" />}
-								{providerName === 'Apple TV' && <Image src={appleIcon} alt="Stan" className="w-12 h-12" />}
-								{providerName === 'BritBox' && <Image src={britboxIcon} alt="Stan" className="w-12 h-12" />}
-								{providerName === 'BINGE' && <Image src={bingeIcon} alt="Stan" className="w-12 h-12" />}
+					<h2 className="text-3xl font-bold mb-4 text-secondary-text">Providers</h2>
+
+					{/* Provider List */}
+					<div className="grid grid-cols-2 gap-6 w-full">
+						{Object.entries(providerCounts).map(([providerName, count]) => (
+							<div key={providerName} className="grid grid-cols-8 gap-1 w-full">
+								<div className="col-span-1">
+									{providerName === 'Netflix' && <Image src={netflixIcon} alt="Netflix" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'Foxtel Now' && <Image src={foxtelIcon} alt="Foxtel Now" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'Stan' && <Image src={stanIcon} alt="Stan" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'Amazon Prime Video' && <Image src={amazonPrimeIcon} alt="Stan" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'Apple TV' && <Image src={appleIcon} alt="Stan" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'BritBox' && <Image src={britboxIcon} alt="Stan" className="w-16 h-10 rounded-lg" />}
+									{providerName === 'BINGE' && <Image src={bingeIcon} alt="Stan" className="w-16 h-10 rounded-lg" />}
+								</div>
+									<div className="flex flex-col w-full col-span-4 pl-2">
+										<span className="text-main-text font-bold">{providerName}</span>
+										{providerName === 'Netflix' && <span className="text-main-text">$16.99 per month</span>}
+										{providerName === 'Foxtel Now' && <span className="text-main-text">$45.00 per month</span>}
+										{providerName === 'Stan' && <span className="text-main-text">$16.00 per month</span>}
+										{providerName === 'Amazon Prime Video' && <span className="text-main-text">$9.99 per month</span>}
+										{providerName === 'Apple TV' && <span className="text-main-text">$12.99 per month</span>}
+										{providerName === 'BritBox' && <span className="text-main-text">$9.99 per month</span>}
+										{providerName === 'BINGE' && <span className="text-main-text">$10.00 per month</span>}
+									</div>
+									<span className="flex col-span-1 justify-center items-center text-main-text">-</span>
+									<div className="flex w-full col-span-2 justify-center items-center">
+										<span className="text-main-text">{count}</span>
+										<span className="text-main-text">&nbsp;counts</span>
+									</div>
 							</div>
-								<div className="flex flex-col w-full col-span-3">
-									<span>{providerName}</span>
-									{providerName === 'Netflix' && <span className="text-gray-500">$16.99 per month</span>}
-									{providerName === 'Foxtel Now' && <span className="text-gray-500">$45.00 per month</span>}
-									{providerName === 'Stan' && <span className="text-gray-500">$16.00 per month</span>}
-									{providerName === 'Amazon Prime Video' && <span className="text-gray-500">$9.99 per month</span>}
-									{providerName === 'Apple TV' && <span className="text-gray-500">$12.99 per month</span>}
-									{providerName === 'BritBox' && <span className="text-gray-500">$9.99 per month</span>}
-									{providerName === 'BINGE' && <span className="text-gray-500">$10.00 per month</span>}
-								</div>
-								<span className="flex text-gray-500 col-span-2 justify-center items-center">-</span>
-								<div className="flex w-full col-span-2 justify-center items-center">
-									<span className="text-gray-500">{count}</span>
-									<span className="text-gray-500">&nbsp;counts</span>
-								</div>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
 
+				</div>
 			</div>
 		</div>
 	);

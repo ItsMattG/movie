@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Recursive } from "next/font/google"
-
-// const inter = Inter({ subsets: ["latin"] });
 
 const roboto = Recursive({
 	subsets: ['latin'],
