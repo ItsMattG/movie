@@ -88,7 +88,10 @@ const App: React.FC = () => {
 			</div>
 
 			<div className="flex flex-col justify-center items-center gap-4 w-6/12">
-				<div className="flex items-center border border-gray-300 p-2 rounded-lg w-full bg-button-color max-w-sm">
+				<div className="flex items-center w-full max-w-sm text-xs">
+					<span className="text-button-text font-normal">*CSV files only</span>
+				</div>
+				<div className="flex items-center border border-gray-300 p-2 rounded-lg w-full bg-button-color max-w-sm mt-[-10px]">
 					<label
 						className={`text-button-text font-medium whitespace-nowrap ${
 							!service ? 'opacity-50 cursor-not-allowed disabled' : 'cursor-pointer'

@@ -407,7 +407,7 @@ setProviderCounts(sortedCountsObject);
 				</div>
 					<div className="flex justify-center w-full">
 						<button
-							className="px-1 py-2 bg-button-color-secondary text-md font-semibold text-main-text rounded-lg w-1/5"
+							className="px-1 py-2 bg-button-color-secondary text-md font-semibold text-main-text rounded-lg w-2/5"
 							onClick={() => window.location.href='/upload'}
 						>
 							Back to upload
