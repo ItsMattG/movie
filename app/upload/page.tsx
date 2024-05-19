@@ -11,6 +11,7 @@ const App: React.FC = () => {
 	const [service, setService] = useState<string | null>(null);
 	const [isLocalStorageEmpty, setIsLocalStorageEmpty] = useState(true);
 	const [fileName, setFileName] = useState('No file chosen');
+	const [fileNamesUploaded, setFileNamesUploaded] = useState<string[]>([]);
 	const [isInstructionsModalOpen, setIsInstructionsModalOpen] = useState<boolean>(false);
 	const [selectedInstruction, setSelectedInstruction] = useState<string | null>('netflix');
 
@@ -20,6 +21,11 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
+		const storedFileNames = localStorage.getItem('fileNames');
+    if (storedFileNames) {
+        const fileNamesArray = JSON.parse(storedFileNames);
+				setFileNamesUploaded(fileNamesArray);
+    }
 	}, []);
 
 	const handleClose = () => {
@@ -44,6 +50,11 @@ const App: React.FC = () => {
 						const files = event.target.files;
 						if (files) {
 							setUploadedFiles(prevFiles => [...prevFiles, ...Array.from(files)]);
+							const fileName = files[0].name;
+							let fileNames = localStorage.getItem('fileNames');
+							let fileNamesArray = fileNames ? JSON.parse(fileNames) : [];
+							fileNamesArray.push(fileName);
+							localStorage.setItem('fileNames', JSON.stringify(fileNamesArray));
 						}
 					} catch (e) {
 						setUploadFailed(true);
@@ -67,6 +78,7 @@ const App: React.FC = () => {
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
 		console.log('after', localStorage)
 		setUploadedFiles([]);
+		setFileNamesUploaded([]);
 	};
 
 	return (
@@ -105,13 +117,21 @@ const App: React.FC = () => {
 
 				<div className="flex flex-col p-2 text-left rounded-lg w-full max-w-sm text-main-text">
 						<h3 className="text-md font-semibold text-secondary-text">Uploaded Files:</h3>
-						{uploadedFiles.length > 0 ? (
+						{fileNamesUploaded.length > 0 && (
 								<ul>
-									{Array.from(uploadedFiles).map((file, index) => (
-											<li key={index}>{file.name.replace('.csv', '')}</li>
-									))}
+										{Array.from(fileNamesUploaded).map((fileName, index) => (
+												<li key={index}>{fileName.replace('.csv', '')}</li>
+										))}
 								</ul>
-						) : (
+						)}
+						{uploadedFiles.length > 0 && (
+								<ul>
+										{Array.from(uploadedFiles).map((file, index) => (
+												<li key={index}>{file.name.replace('.csv', '')}</li>
+										))}
+								</ul>
+						)}
+						{(fileNamesUploaded.length === 0 && uploadedFiles.length === 0) && (
 								<p>No files uploaded.</p>
 						)}
 				</div>
