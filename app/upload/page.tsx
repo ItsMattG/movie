@@ -44,6 +44,7 @@ const App: React.FC = () => {
 					try {
 						console.log('fff')
 						localStorage.setItem(`${service}UploadedFile`, e.target.result as string);
+						localStorage.setItem(`${service}FileUploadedFlag`, 'true');
 						setUploadSuccess(true);
 						setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
 						console.log('uipload', uploadSuccess)
@@ -67,9 +68,9 @@ const App: React.FC = () => {
 		}
 	};
 
-	const handleServiceSelect = (service: string) => {
-		setService(service);
-		console.log('ser', service)
+	const handleServiceSelect = (selectedService: string) => {
+		setService(selectedService);
+		const fileUploadedFlag = localStorage.getItem(`${selectedService}FileUploadedFlag`);
 	};
 
 	const handleLocalStorageClear = () => {
@@ -182,8 +183,9 @@ const App: React.FC = () => {
 												service === 'netflix'
 														? 'bg-button-color-tertiary text-white'
 														: 'bg-button-color-tertiary text-white opacity-50'
-										} rounded-lg w-full`}
+										} rounded-lg w-full ${localStorage.getItem('netflixFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : ''}`}
 										onClick={() => handleServiceSelect('netflix')}
+										disabled={localStorage.getItem('netflixFileUploadedFlag') === 'true'}
 								>
 										Netflix
 								</button>
@@ -192,8 +194,9 @@ const App: React.FC = () => {
 												service === 'prime'
 														? 'bg-button-color-tertiary text-white'
 														: 'bg-button-color-tertiary text-white opacity-50'
-										} rounded-lg w-full`}
+										} rounded-lg w-full ${localStorage.getItem('primeFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : ''}`}
 										onClick={() => handleServiceSelect('prime')}
+										disabled={localStorage.getItem('primeFileUploadedFlag') === 'true'}
 								>
 										Prime
 								</button>
