@@ -10,6 +10,7 @@ module.exports = {
 			colors: {
 				'background-primary': '#FCF3E4',
 				'background-secondary': '#65372A',
+				'background-tertiary': '#F9DFB9',
 				'main-text': '#24130F',
 				'secondary-text': '#4A2B24',
 				'button-text': '#65372A',
