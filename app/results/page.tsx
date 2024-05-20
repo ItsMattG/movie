@@ -9,6 +9,7 @@ import amazonPrimeIcon from '../../public/amazon.jpg';
 import appleIcon from '../../public/apple.png';
 import britboxIcon from '../../public/britbox.png';
 import bingeIcon from '../../public/binge.png';
+import Loading from './loading';
 
 interface DataItem {
 	Title: string;
@@ -22,6 +23,7 @@ interface Provider {
 }
 
 const Home: React.FC = () => {
+	const [isLoading, setIsLoading] = useState(true);
 	const [movieData, setMovieData] = useState<DataItem[]>([]);
 	const [tvShowData, setTvShowData] = useState<DataItem[]>([]);
 	const [providerCounts, setProviderCounts] = useState<{ [providerName: string]: number }>({});
@@ -31,19 +33,25 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const storedMovies = JSON.parse(localStorage.getItem('mergedMovies') || '[]');
-			const storedTvShows = JSON.parse(localStorage.getItem('mergedTvShows') || '[]');
-			const storedCounts = JSON.parse(localStorage.getItem('mergedCounts') || '[]');
-			const storedMaxProvider = JSON.parse(localStorage.getItem('maxProvider') || '[]');
-			const storedMaxCount = JSON.parse(localStorage.getItem('maxCount') || '[]');
-			const primeDataLocal = localStorage.getItem('primeUploadedFile');
-			const netflixDataLocal = localStorage.getItem('netflixUploadedFile');
+				const storedMovies = JSON.parse(localStorage.getItem('mergedMovies') || '[]');
+				const storedTvShows = JSON.parse(localStorage.getItem('mergedTvShows') || '[]');
+				const storedCounts = JSON.parse(localStorage.getItem('mergedCounts') || '[]');
+				const storedMaxProvider = JSON.parse(localStorage.getItem('maxProvider') || '[]');
+				const storedMaxCount = JSON.parse(localStorage.getItem('maxCount') || '[]');
+				const primeDataLocal = localStorage.getItem('primeUploadedFile');
+				const netflixDataLocal = localStorage.getItem('netflixUploadedFile');
 
-			if (storedMovies.length === 0 || storedTvShows.length === 0 || storedCounts.length === 0 || storedMaxProvider.length === 0 || storedMaxCount.length === 0) {
-				if (primeDataLocal && netflixDataLocal) {
-					try {
-						const primeData = await fetchPrimeData(primeDataLocal);
-						const netflixData = await fetchNetflixData(netflixDataLocal);
+				if (storedMovies.length === 0 || storedTvShows.length === 0 || storedCounts.length === 0 || storedMaxProvider.length === 0 || storedMaxCount.length === 0) {
+						let primeData = { movies: [], tvShows: [], mergedCounts: {} };
+						let netflixData = { formattedMovies: [], formattedTvShows: [], mergedCounts: {} };
+
+						if (primeDataLocal) {
+								primeData = await fetchPrimeData(primeDataLocal);
+						}
+
+						if (netflixDataLocal) {
+								netflixData = await fetchNetflixData(netflixDataLocal);
+						}
 
 						const mergedMovies = [...movieData, ...primeData.movies, ...(netflixData.formattedMovies ?? [])];
 						const mergedTvShows = [...tvShowData, ...primeData.tvShows, ...(netflixData.formattedTvShows ?? [])];
@@ -71,28 +79,28 @@ const Home: React.FC = () => {
 
 						localStorage.setItem('maxProvider', JSON.stringify(maxProvider));
 						localStorage.setItem('maxCount', JSON.stringify(maxCount));
-					} catch (error) {
-						console.error('Error fetching data:', error);
-					}
+						setTimeout(() => {
+							setIsLoading(false);
+						}, 1000);
+				} else {
+						setMovieData(storedMovies);
+						setTvShowData(storedTvShows);
+						const sortedCounts = Object.entries(storedCounts)
+								.map(([provider, count]) => ({ provider, count: Number(count) }))
+								.sort((a, b) => b.count - a.count);
+
+						const sortedCountsObject = sortedCounts.reduce((obj: { [key: string]: number }, item) => {
+								obj[item.provider] = item.count;
+								return obj;
+						}, {});
+
+						setProviderCounts(sortedCountsObject);
+						setHighestProvider(storedMaxProvider);
+						setHighestProviderCount(storedMaxCount);
+						setTimeout(() => {
+							setIsLoading(false);
+						}, 1000);
 				}
-			} else {
-				setMovieData(storedMovies);
-				setTvShowData(storedTvShows);
-				const sortedCounts = Object.entries(storedCounts)
-					.map(([provider, count]) => ({ provider, count: Number(count) }))
-					.sort((a, b) => b.count - a.count);
-
-				console.log('stored', sortedCounts);
-				const sortedCountsObject = sortedCounts.reduce((obj: { [key: string]: number }, item) => {
-					obj[item.provider] = item.count;
-					return obj;
-				}, {});
-
-setProviderCounts(sortedCountsObject);
-				setHighestProvider(storedMaxProvider);
-				setHighestProviderCount(storedMaxCount);
-				console.log('storedcounts', storedCounts)
-			}
 		}
 		fetchData();
 	}, []);
@@ -145,6 +153,10 @@ setProviderCounts(sortedCountsObject);
 			return { movies: [], tvShows: [], mergedCounts: {} };
 		}
 	};
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	const fetchNetflixData = async (netflixData: string) => {
 		try {

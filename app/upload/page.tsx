@@ -214,7 +214,7 @@ const App: React.FC = () => {
 										<div className="absolute inset-0 bg-gray-500 opacity-75"></div>
 								</div>
 
-									<div className="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-lg w-full" style={{ minHeight: '450px'}}>
+									<div className="relative inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle max-w-lg w-full" style={{ minHeight: '490px'}}>
 											<div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 												<div className="sm:flex sm:items-start">
 													<div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left min-h-96 w-full">
@@ -272,8 +272,9 @@ const App: React.FC = () => {
 																		<p className="text-md text-gray-500 mb-1">6. Once downloaded close this dialog, select Prime and upload the document</p>
 																</div>
 														)}
-												</div>
 													</div>
+												</div>
+												<p className="absolute bottom-0 sm:ml-4 mb-5 text-md text-gray-500"><span className="font-bold">Note:</span> The expected format are 2 columns (Title, Date)</p>
 											</div>
 									</div>
 							</div>
