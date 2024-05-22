@@ -1,8 +1,12 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Image from 'next/image'
 import Logo from '../public/S.png';
 
 export default function LandingPage() {
+	const [expanded, setExpanded] = useState<number>(1);
+console.log('expanded', expanded)
   return (
     <div>
 			<header className="absolute w-full">
@@ -22,9 +26,9 @@ export default function LandingPage() {
 					</div>
 				</nav>
 			</header>
-      <section className="min-h-screen bg-background-primary mx-auto py-8 lg:pb-16 lg:pt-20 text-black flex items-center justify-center">
-				<div className="max-w-5xl px-8 flex flex-col gap-10 lg:gap-12 items-center justify-center text-center">
-					<div className="flex flex-col gap-8 items-center">
+      <section className="min-h-screen bg-background-primary mx-auto py-8 lg:pb-8 lg:pt-20 text-black flex items-center justify-center">
+				<div className="max-w-5xl px-8 flex flex-col gap-10 lg:gap-9 items-center justify-center text-center">
+					<div className="flex flex-col gap-4 items-center">
 						<h1 className="lg:backdrop:-mb-4 group text-6xl font-extrabold leading-[1.3em]">
 							<span className="">
 								Discover where your<br />
@@ -104,22 +108,78 @@ export default function LandingPage() {
 				</div>
       </section>
       <section className="min-h-screen bg-background-primary">
-        {/* Content for section 3 */}
+				<div className="px-8 py-24 md:py-32 space-y-24 md:space-y-32 max-w-7xl mx-auto">
+					<div className="mb-16 md:mb-32 space-y-8 md:space-y-10">
+							<h2 className="md:text-center max-w-4xl md:mx-auto text-main-text text-5xl font-black">Discover the perfect entertainment destination today,<span className="bg-button-text text-background-tertiary px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">not tomorrow</span></h2>
+							<p className="max-w-2xl mx-auto text-lg md:text-center text-secondary-text leading-relaxed">Our intuitive tool provides instant insights into your favourite shows and movies, helping you find the best streaming platforms effortlessly.</p>
+					</div>
+					<div className=" flex flex-col md:flex-row gap-12 md:gap-24">
+						<div className="grid grid-cols-1 items-stretch gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
+							<ul className="w-full">
+									<li>
+										<button onClick={() => setExpanded(1)} className="group relative flex gap-5 items-center w-full py-5 text-base font-medium text-left md:text-lg" aria-expanded="false">
+												<span className={`scale-150 duration-100 ${expanded === 1 ? 'text-primary' : ''}`}>📁</span>
+												<span className="group-hover:translate-x-1 duration-150 flex-1 text-base-content">
+													<h3 className={`inline ${expanded === 1 ? 'text-button-color' : 'text-main-text'} text-2xl font-bold`}>Upload Your Viewing Data</h3>
+												</span>
+												<span className="ml-auto">
+													<svg className={`flex-shrink-0 w-[14px] h-[14px] ml-auto fill-base-content-secondary ${expanded === 1 ? 'hidden' : ''}`} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+															<rect y="7" width="16" height="2" rx="1" className="transform origin-center transition duration-200 ease-out false"></rect>
+															<rect y="7" width="16" height="2" rx="1" className="transform origin-center rotate-90 transition duration-200 ease-out false"></rect>
+													</svg>
+												</span>
+										</button>
+										<div className="transition-all duration-5000 ease-in-out text-base-content-secondary overflow-hidden" style={{ opacity: expanded === 1 ? 1 : 0, maxHeight: expanded === 1 ? '110px' : '0px' }}>
+											<div className="pb-5 leading-relaxed text-secondary-text">Take the first step towards optimising your streaming experience by uploading your Netflix and Prime watch history. Our intuitive process ensures that you can share your data with ease.</div>
+										</div>
+									</li>
+									<li>
+										<button onClick={() => setExpanded(2)} className="group relative flex gap-5 items-center w-full py-5 text-base font-medium text-left md:text-lg" aria-expanded="false">
+												<span className={`scale-150 duration-100 ${expanded === 2 ? 'text-primary' : ''}`}>🔍</span>
+												<span className="group-hover:translate-x-1 duration-150 flex-1 text-base-content">
+													<h3 className={`inline ${expanded === 2 ? 'text-button-color' : 'text-main-text'} text-2xl font-bold`}>Analyse Your Viewing Habits</h3>
+												</span>
+												<span className="ml-auto">
+													<svg className={`flex-shrink-0 w-[14px] h-[14px] ml-auto fill-base-content-secondary ${expanded === 2 ? 'hidden' : ''}`} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+															<rect y="7" width="16" height="2" rx="1" className="transform origin-center transition duration-200 ease-out false"></rect>
+															<rect y="7" width="16" height="2" rx="1" className="transform origin-center rotate-90 transition duration-200 ease-out false"></rect>
+													</svg>
+												</span>
+										</button>
+										<div className="transition-all duration-5000 ease-in-out text-base-content-secondary overflow-hidden" style={{ opacity: expanded === 2 ? 1 : 0, maxHeight: expanded === 2 ? '110px' : '0px' }}>
+											<div className="pb-5 leading-relaxed text-secondary-text">Sit back and let our tool analyze your viewing habits. From identifying where your favorite shows are available to uncovering new streaming options, we provide comprehensive insights to empower your entertainment decisions.</div>
+										</div>
+									</li>
+									<li>
+										<button onClick={() => setExpanded(3)} className="group relative flex gap-5 items-center w-full py-5 text-base font-medium text-left md:text-lg" aria-expanded="true">
+												<span className={`scale-150 duration-100 ${expanded === 3 ? 'text-primary' : ''}`}>🎬</span>
+												<span className="group-hover:translate-x-1 duration-150 flex-1 text-base-content">
+													<h3 className={`inline ${expanded === 3 ? 'text-button-color' : 'text-main-text'} text-2xl font-bold`}>Discover Your Perfect Streaming Fit</h3>
+												</span>
+												<span className="ml-auto">
+													<svg className={`flex-shrink-0 w-[14px] h-[14px] ml-auto fill-base-content-secondary ${expanded === 3 ? 'hidden' : ''}`} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+														<rect y="7" width="16" height="2" rx="1" className="transform origin-center transition duration-200 ease-out"></rect>
+														<rect y="7" width="16" height="2" rx="1" className="transform origin-center rotate-90 transition duration-200 ease-out"></rect>
+													</svg>
+												</span>
+										</button>
+										<div className="transition-all duration-5000 ease-in-out text-base-content-secondary overflow-hidden" style={{ opacity: expanded === 3 ? 1 : 0, maxHeight: expanded === 3 ? '110px' : '0px' }}>
+											<div className="pb-5 leading-relaxed text-secondary-text">Armed with insights, uncover the ideal streaming platform tailored to your preferences. Whether finding the platform with the most extensive library for your favorite shows or discovering new options based on your viewing history, we help you navigate effortlessly.</div>
+										</div>
+									</li>
+							</ul>
+							{/* <video className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2 sm:p-2 border-2 border-primary/10 bg-base-200" autoplay="" loop="" playsinline="" controls="" width="500" height="500">
+									<source src="/feature_3.mp4" type="video/mp4">
+							</video> */}
+						</div>
+					</div>
+				</div>
       </section>
       <section className="min-h-screen bg-background-secondary">
-        {/* Content for section 4 */}
+        {/* Pricing */}
       </section>
       <section className="min-h-screen bg-background-primary">
-        {/* Content for section 5 */}
-      </section>
-      <section className="min-h-screen bg-background-secondary">
-        {/* Content for section 6 */}
-      </section>
-      <section className="min-h-screen bg-background-primary">
-        {/* Content for section 7 */}
-      </section>
-      <section className="min-h-screen bg-background-secondary">
-        {/* Content for section 8 */}
+        {/* FAQ */}
       </section>
 			<footer className="h-[42vh] bg-background-tertiary">
         {/* Content for footer */}
