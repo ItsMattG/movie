@@ -168,9 +168,17 @@ console.log('expanded', expanded)
 										</div>
 									</li>
 							</ul>
-							{/* <video className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2 sm:p-2 border-2 border-primary/10 bg-base-200" autoplay="" loop="" playsinline="" controls="" width="500" height="500">
-									<source src="/feature_3.mp4" type="video/mp4">
-							</video> */}
+							{expanded === 1 &&
+								<video className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2 sm:p-2 border-2 border-primary/10 bg-base-200" autoPlay={true} loop={true} playsInline={true} muted={true} width="500" height="500">
+									<source src="/Save.mp4" type="video/mp4" />
+								</video>
+							}
+							{expanded === 2 &&
+								<Image alt="Placeholder" loading="lazy" width={500} height={500} decoding="async" data-nimg="1" className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2 sm:p-2 border-2 border-background-secondary bg-background-primary object-contain object-center" src="/image.png" style={{ color: 'transparent' }} />
+							}
+							{expanded === 3 &&
+								<Image alt="Placeholder" loading="lazy" width={500} height={500} decoding="async" data-nimg="1" className="rounded-box aspect-square w-full sm:w-[26rem] sm:-m-2 sm:p-2 border-2 border-background-secondary bg-background-primary object-contain object-center" src="/save.png" style={{ color: 'transparent' }} />
+							}
 						</div>
 					</div>
 				</div>
