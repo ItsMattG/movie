@@ -154,10 +154,6 @@ const Home: React.FC = () => {
 		}
 	};
 
-	if (isLoading) {
-		return <Loading />;
-	}
-
 	const fetchNetflixData = async (netflixData: string) => {
 		try {
 			const response = await fetch('/api/netflix', {
@@ -171,10 +167,10 @@ const Home: React.FC = () => {
 				throw new Error('Failed to fetch data');
 			}
 			const jsonData: DataItem[] = await response.json();
-
 			const filteredData = jsonData.filter(item => {
 				const [day, month, year] = item.Date.split('/');
-				const itemDate = new Date(`${year}-${month}-${day}`);
+				const fullYear = year.length === 2 ? `20${year}` : year;
+				const itemDate = new Date(`${fullYear}-${month}-${day}`);
 				const today = new Date();
 				today.setHours(0, 0, 0, 0);
 				const twelveMonthsAgo = new Date();
@@ -360,6 +356,10 @@ const Home: React.FC = () => {
 				}
 			}
 	};
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<div className="h-screen flex items-center justify-center bg-background-primary px-8">
