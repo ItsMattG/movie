@@ -16,6 +16,37 @@ export default function LandingPage() {
 		}
 	};
 
+	const paddingPricing = 575;
+	const paddingFAQ = 530;
+
+const handlePricingScroll = (event: React.MouseEvent<HTMLAnchorElement>, padding: number) => {
+  event.preventDefault();
+  const pricingElement = document.getElementById('pricing');
+  if (pricingElement) {
+    console.log('Scrolling to pricing element...');
+    pricingElement.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      console.log('Adjusting scroll position...');
+      window.scrollBy(0, +padding);
+      console.log('Adjusted scroll position');
+    }, 500); // Adjust this delay as needed
+  }
+};
+
+	const handleFAQScroll = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  event.preventDefault();
+  const pricingElement = document.getElementById('faq');
+  if (pricingElement) {
+    console.log('Scrolling to pricing element...');
+    pricingElement.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      console.log('Adjusting scroll position...');
+      window.scrollBy(0, +paddingFAQ);
+      console.log('Adjusted scroll position');
+    }, 500); // Adjust this delay as needed
+  }
+	};
+
 	return (
 		<div>
 			<header className="absolute w-full">
@@ -27,8 +58,8 @@ export default function LandingPage() {
 						</a>
 					</div>
 					<div className="lg:flex lg:justify-center lg:gap-12 lg:items-center">
-						<a className="link link-hover text-main-text" title="Pricing" href="/#pricing">Pricing</a>
-						<a className="link link-hover text-main-text" title="FAQ" href="/#faq">FAQ</a>
+						<a className="link link-hover text-main-text" title="Pricing" onClick={(event) => handlePricingScroll(event, 575)}>Pricing</a>
+						<a className="link link-hover text-main-text" title="FAQ" onClick={handleFAQScroll}>FAQ</a>
 					</div>
 					<div className="lg:flex lg:justify-end lg:flex-1">
 						<button className="px-4 py-4 bg-button-color text-button-text text-sm font-semibold rounded-lg hover:bg-button-color/85 rounded-[66px]">Get Started</button>
@@ -192,7 +223,7 @@ export default function LandingPage() {
 					</div>
 				</div>
 			</section>
-			<section className="min-h-screen bg-background-fourthly overflow-hidden">
+			<section className="min-h-screen bg-background-fourthly overflow-hidden" id="pricing">
 				<div className="py-24 px-8 max-w-5xl mx-auto">
 					<div className="flex flex-col text-center w-full mb-20">
 							<p className="font-medium text-green-text mb-8">Pricing</p>
@@ -327,7 +358,7 @@ export default function LandingPage() {
 					<div className="text-center text-xs text-secondary-text mt-8">*With great power comes great responsibility. Use WatchWise responsibly.</div>
 				</div>
 			</section>
-			<section className="bg-background-primary" style={{ minHeight: '80vh' }}>
+			<section className="bg-background-primary" style={{ minHeight: '80vh' }} id="faq">
 				<div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
 					<div className="flex flex-col text-left basis-1/2">
 						<p className="inline-block font-semibold text-green-text mb-4">FAQ</p>
@@ -414,8 +445,8 @@ export default function LandingPage() {
 							<div className="lg:w-1/3 md:w-1/2 w-full px-4">
 								<div className="footer-title font-semibold text-main-text tracking-widest text-sm md:text-left mb-3">LINKS</div>
 								<div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
-									<a className="link link-hover text-main-text" href="/dashboard">Login</a>
-									<a className="link link-hover text-main-text" href="/#pricing">Pricing</a>
+									<a className="link link-hover text-main-text">Login</a>
+									<a className="link link-hover text-main-text" onClick={(event) => handlePricingScroll(event, -280)}>Pricing</a>
 								</div>
 							</div>
 							<div className="lg:w-1/3 md:w-1/2 w-full px-4">
