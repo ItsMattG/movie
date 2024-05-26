@@ -8,8 +8,8 @@ const roboto = Recursive({
 });
 
 export const metadata: Metadata = {
-	title: "Stream Data Analysis",
-	description: "Stream Data Analysis is a web application that allows you to analyse your streaming service watch history data.",
+	title: "WatchWise",
+	description: "WatchWise Analysis is a web application that allows you to analyse your streaming service watch history data.",
 };
 
 export default function RootLayout({
@@ -19,6 +19,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📺</text></svg>"></link>
 			<body className={roboto.className}>{children}</body>
 		</html>
 	);
