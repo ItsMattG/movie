@@ -16,35 +16,32 @@ export default function LandingPage() {
 		}
 	};
 
-	const paddingPricing = 575;
-	const paddingFAQ = 530;
+	const handlePricingScroll = (event: React.MouseEvent<HTMLAnchorElement>, padding: number) => {
+		event.preventDefault();
+		const pricingElement = document.getElementById('pricing');
+		if (pricingElement) {
+			console.log('Scrolling to pricing element...');
+			pricingElement.scrollIntoView({ behavior: 'smooth' });
+			setTimeout(() => {
+				console.log('Adjusting scroll position...');
+				window.scrollBy(0, +padding);
+				console.log('Adjusted scroll position');
+			}, 500); // Adjust this delay as needed
+		}
+	};
 
-const handlePricingScroll = (event: React.MouseEvent<HTMLAnchorElement>, padding: number) => {
-  event.preventDefault();
-  const pricingElement = document.getElementById('pricing');
-  if (pricingElement) {
-    console.log('Scrolling to pricing element...');
-    pricingElement.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      console.log('Adjusting scroll position...');
-      window.scrollBy(0, +padding);
-      console.log('Adjusted scroll position');
-    }, 500); // Adjust this delay as needed
-  }
-};
-
-	const handleFAQScroll = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  event.preventDefault();
-  const pricingElement = document.getElementById('faq');
-  if (pricingElement) {
-    console.log('Scrolling to pricing element...');
-    pricingElement.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => {
-      console.log('Adjusting scroll position...');
-      window.scrollBy(0, +paddingFAQ);
-      console.log('Adjusted scroll position');
-    }, 500); // Adjust this delay as needed
-  }
+	const handleFAQScroll = (event: React.MouseEvent<HTMLAnchorElement>, padding: number) => {
+		event.preventDefault();
+		const pricingElement = document.getElementById('faq');
+		if (pricingElement) {
+			console.log('Scrolling to pricing element...');
+			pricingElement.scrollIntoView({ behavior: 'smooth' });
+			setTimeout(() => {
+				console.log('Adjusting scroll position...');
+				window.scrollBy(0, +padding);
+				console.log('Adjusted scroll position');
+			}, 500); // Adjust this delay as needed
+		}
 	};
 
 	return (
@@ -59,7 +56,7 @@ const handlePricingScroll = (event: React.MouseEvent<HTMLAnchorElement>, padding
 					</div>
 					<div className="lg:flex lg:justify-center lg:gap-12 lg:items-center">
 						<a className="link link-hover text-main-text" title="Pricing" onClick={(event) => handlePricingScroll(event, 575)}>Pricing</a>
-						<a className="link link-hover text-main-text" title="FAQ" onClick={handleFAQScroll}>FAQ</a>
+						<a className="link link-hover text-main-text" title="FAQ" onClick={(event) => handleFAQScroll(event, 640)}>FAQ</a>
 					</div>
 					<div className="lg:flex lg:justify-end lg:flex-1">
 						<button className="px-4 py-4 bg-button-color text-button-text text-sm font-semibold rounded-lg hover:bg-button-color/85 rounded-[66px]">Get Started</button>
