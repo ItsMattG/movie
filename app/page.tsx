@@ -59,7 +59,9 @@ export default function LandingPage() {
 						<a className="link link-hover text-main-text" title="FAQ" onClick={(event) => handleFAQScroll(event, 640)}>FAQ</a>
 					</div>
 					<div className="lg:flex lg:justify-end lg:flex-1">
-						<button className="px-4 py-4 bg-button-color text-button-text text-sm font-semibold rounded-lg hover:bg-button-color/85 rounded-[66px]">Get Started</button>
+						<a href="/account">
+							<button className="px-4 py-4 bg-button-color text-button-text text-sm font-semibold rounded-lg hover:bg-button-color/85 rounded-[66px]">Get Started</button>
+						</a>
 					</div>
 				</nav>
 			</header>
