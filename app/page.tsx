@@ -59,7 +59,7 @@ export default function LandingPage() {
 						<a className="link link-hover text-main-text" title="FAQ" onClick={(event) => handleFAQScroll(event, 640)}>FAQ</a>
 					</div>
 					<div className="lg:flex lg:justify-end lg:flex-1">
-						<a href="/account">
+						<a href="/signup">
 							<button className="px-4 py-4 bg-button-color text-button-text text-sm font-semibold rounded-lg hover:bg-button-color/85 rounded-[66px]">Get Started</button>
 						</a>
 					</div>
@@ -106,7 +106,7 @@ export default function LandingPage() {
 								</div>
 							</li>
 					</ul>
-						<a href="#pricing" className="btn bg-button-color btn-wide group text-button-text hover:bg-button-color/85 rounded-[33px] border-none">
+						<a onClick={(event) => handlePricingScroll(event, 655)} className="btn bg-button-color btn-wide group text-button-text hover:bg-button-color/85 rounded-[33px] border-none">
 							Get WatchWise
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 fill-button-text group-hover:scale-110 group-hover:translate-x-0.5 transition-transform duration-200">
 								<path fill-rule="evenodd" d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z" clip-rule="evenodd"></path>
@@ -417,7 +417,7 @@ export default function LandingPage() {
 							<div className="flex flex-col items-center p-12 md:p-16 text-center">
 								<h2 className="text-3xl md:text-5xl mb-8 md:mb-12 text-main-text font-black">Unlock your streaming insights now</h2>
 								<p className="text-lg text-secondary-text mb-12 md:mb-16">Upload your watch history and start discovering where to find your favorite content!</p>
-								<a href="#pricing" className="btn bg-button-color btn-wide group text-button-text hover:bg-button-color/85 rounded-[33px] border-none">
+								<a onClick={(event) => handlePricingScroll(event, -210)} className="btn bg-button-color btn-wide group text-button-text hover:bg-button-color/85 rounded-[33px] border-none">
 										Get WatchWise
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 fill-primary-content group-hover:scale-110 group-hover:translate-x-0.5 transition-transform duration-200">
 											<path fill-rule="evenodd" d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z" clip-rule="evenodd"></path>
