@@ -1,9 +1,9 @@
 'use client'
-
+import withAuth from "../auth/page";
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import primeInstructions from './data/primeInstructions';
 
-const App: React.FC = () => {
+const Upload: React.FC = () => {
 	const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 	const [uploadFailed, setUploadFailed] = useState<boolean>(false);
 	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -306,4 +306,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+export default withAuth(Upload);

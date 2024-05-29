@@ -1,4 +1,5 @@
 'use client'
+import withAuth from "../auth/page";
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -430,4 +431,4 @@ const Home: React.FC = () => {
 	);
 };
 
-export default Home;
+export default withAuth(Home);
