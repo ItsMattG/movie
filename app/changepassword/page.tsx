@@ -12,11 +12,11 @@ export default function ChangePassword() {
 						<form className="space-y-4 md:space-y-6" action="#">
 							<div>
 								<label htmlFor="new-password" className="block mb-2 text-sm font-medium text-main-text">New Password</label>
-								<input type="new-password" name="new-password" id="new-password" placeholder="••••••••" className="bg-background-primary border border-background-secondary text-main-text sm:text-sm rounded-lg focus:ring-background-secondary focus:border-background-secondary block w-full p-2.5" required={true} />
+								<input type="password" name="new-password" id="new-password" placeholder="••••••••" className="bg-background-primary border border-background-secondary text-main-text sm:text-sm rounded-lg focus:ring-background-secondary focus:border-background-secondary block w-full p-2.5" required={true} />
 							</div>
 							<div>
 								<label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-main-text">Confirm password</label>
-								<input type="confirm-password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-background-primary border border-background-secondary text-main-text sm:text-sm rounded-lg focus:ring-background-secondary focus:border-background-secondary block w-full p-2.5" required={true} />
+								<input type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-background-primary border border-background-secondary text-main-text sm:text-sm rounded-lg focus:ring-background-secondary focus:border-background-secondary block w-full p-2.5" required={true} />
 							</div>
 							<div className="flex items-start">
 								<div className="flex items-center h-5">
