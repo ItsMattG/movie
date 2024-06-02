@@ -4,26 +4,26 @@ import { useRouter } from 'next/navigation';
 import supabase from '../utils/supabase';
 
 const withAuth = (Component: FC) => {
-  const AuthenticatedComponent = (props: any): ReactElement => {
-    const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
-    const [metadata, setMetadata] = useState<any | null>(null);
+	const AuthenticatedComponent = (props: any): ReactElement => {
+		const router = useRouter();
+		const [user, setUser] = useState<User | null>(null);
+		const [metadata, setMetadata] = useState<any | null>(null);
 
-    useEffect(() => {
-      const fetchUser = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-        setMetadata(user?.user_metadata);
+		useEffect(() => {
+			const fetchUser = async () => {
+				const { data: { user } } = await supabase.auth.getUser();
+				setUser(user);
+				setMetadata(user?.user_metadata);
 				if (!user) router.push('/signin');
-      };
+			};
 
-      fetchUser();
-    }, []);
+			fetchUser();
+		}, []);
 
-    return <Component />;
-  };
+		return <Component />;
+	};
 
-  return AuthenticatedComponent;
+	return AuthenticatedComponent;
 };
 
 export default withAuth;
