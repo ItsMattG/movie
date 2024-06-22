@@ -18,14 +18,16 @@ const Upload: React.FC = () => {
 	const handleInstructionsModalOpen = () => {
 		setIsInstructionsModalOpen(true);
 	};
-
+	console.log('pspdf')
 	useEffect(() => {
+		console.log('arar')
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
+		console.log('arardfsdfsf')
 		const storedFileNames = localStorage.getItem('fileNames');
-    if (storedFileNames) {
-        const fileNamesArray = JSON.parse(storedFileNames);
+		if (storedFileNames) {
+				const fileNamesArray = JSON.parse(storedFileNames);
 				setFileNamesUploaded(fileNamesArray);
-    }
+		}
 	}, []);
 
 	const handleClose = () => {
@@ -33,21 +35,19 @@ const Upload: React.FC = () => {
 		setUploadFailed(false);
 	};
 
-	console.log('local', typeof window !== 'undefined' && window.localStorage ? window.localStorage : {});
 	const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target && event.target.files && event.target.files.length > 0) {
 			setFileName(event.target.files[0].name.replace('.csv', ''));
 			const reader = new FileReader();
 			reader.onload = function(e) {
 				if (e.target) {
-					console.log('asdad');
 					try {
-						console.log('fff')
+						console.log('ofsoiufd')
 						localStorage.setItem(`${service}UploadedFile`, e.target.result as string);
+						console.log('ofsoiufdasdasdasd')
 						localStorage.setItem(`${service}FileUploadedFlag`, 'true');
 						setUploadSuccess(true);
 						setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
-						console.log('uipload', uploadSuccess)
 						const files = event.target.files;
 						if (files) {
 							setUploadedFiles(prevFiles => [...prevFiles, ...Array.from(files)]);
@@ -60,10 +60,8 @@ const Upload: React.FC = () => {
 					} catch (e) {
 						setUploadFailed(true);
 					}
-					console.log(localStorage);
 				}
 			};
-			console.log('asdadeee')
 			reader.readAsText(event.target.files[0]);
 		}
 	};
@@ -74,10 +72,8 @@ const Upload: React.FC = () => {
 	};
 
 	const handleLocalStorageClear = () => {
-		console.log('before', localStorage)
 		localStorage.clear();
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
-		console.log('after', localStorage)
 		setUploadedFiles([]);
 		setFileNamesUploaded([]);
 	};
@@ -180,25 +176,53 @@ const Upload: React.FC = () => {
 						<div className="flex space-x-4">
 								<button
 										className={`px-4 py-2 ${
-												service === 'netflix'
-														? 'bg-button-color-tertiary text-white'
-														: 'bg-button-color-tertiary text-white opacity-50'
-										} rounded-lg w-full ${localStorage.getItem('netflixFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : ''}`}
+											service === 'netflix'
+												? 'bg-button-color-tertiary text-white'
+												: 'bg-button-color-tertiary text-white opacity-50'
+											} rounded-lg w-full ${
+											(() => {
+												try {
+													return window.localStorage.getItem('netflixFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : '';
+												} catch (e) {
+													return '';
+												}
+											})()
+										}`}
 										onClick={() => handleServiceSelect('netflix')}
-										disabled={localStorage.getItem('netflixFileUploadedFlag') === 'true'}
-								>
-										Netflix
+										disabled={(() => {
+											try {
+												return window.localStorage.getItem('netflixFileUploadedFlag') === 'true';
+											} catch (e) {
+												return false;
+											}
+										})()}
+									>
+									Netflix
 								</button>
 								<button
-										className={`px-4 py-2 ${
-												service === 'prime'
-														? 'bg-button-color-tertiary text-white'
-														: 'bg-button-color-tertiary text-white opacity-50'
-										} rounded-lg w-full ${localStorage.getItem('primeFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : ''}`}
-										onClick={() => handleServiceSelect('prime')}
-										disabled={localStorage.getItem('primeFileUploadedFlag') === 'true'}
+									className={`px-4 py-2 ${
+										service === 'prime'
+											? 'bg-button-color-tertiary text-white'
+											: 'bg-button-color-tertiary text-white opacity-50'
+										} rounded-lg w-full ${
+										(() => {
+											try {
+												return window.localStorage.getItem('primeFileUploadedFlag') === 'true' ? 'cursor-not-allowed' : '';
+											} catch (e) {
+												return '';
+											}
+										})()
+									}`}
+									onClick={() => handleServiceSelect('prime')}
+									disabled={(() => {
+										try {
+											return window.localStorage.getItem('primeFileUploadedFlag') === 'true';
+										} catch (e) {
+											return false;
+										}
+									})()}
 								>
-										Prime
+									Prime
 								</button>
 						</div>
 						<button

@@ -1,12 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
-import Logo from '../public/S.png';
+import { useRouter } from 'next/navigation';
+import Loading from './loading';
 
 export default function LandingPage() {
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [expanded, setExpanded] = useState<number>(1);
 	const [expandedFAQ, setExpandedFAQ] = useState<number>(0);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (window.location.search.includes('redirect_to=/dashboard')) {
+			router.push('/dashboard');
+		}
+		setIsLoading(false);
+	}, []);
 
 	const handleFAQClick = (num: number) => {
 		if (expandedFAQ === num) {
@@ -43,6 +53,10 @@ export default function LandingPage() {
 			}, 500); // Adjust this delay as needed
 		}
 	};
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<div>

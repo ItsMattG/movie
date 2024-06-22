@@ -1,16 +1,16 @@
-"use client"
-import { useState } from 'react'
-import supabase from '../utils/supabase'
+"use client";
+import { useState } from 'react';
+import supabase from '../utils/supabase';
 
 export default function SignUp() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [confirmPasswored, setConfirmPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const handleSignUp = async (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (password !== confirmPasswored) {
+		if (password !== confirmPassword) {
 			console.error('Passwords do not match');
 			return;
 		}
@@ -18,14 +18,27 @@ export default function SignUp() {
 		const { data: user, error } = await supabase.auth.signUp({
 			email,
 			password,
-		})
+		});
 
 		if (error) {
 			console.error('Error signing up:', error.message);
 		} else {
 			console.log('User signed up:', user);
+
+			// Send welcome email
+			await fetch('/api/email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					email: email,
+					subject: 'Welcome to Our App',
+					text: 'Thank you for creating an account with us!',
+				}),
+			});
 		}
-	}
+	};
 
 	return (
 		<section className="bg-background-primary">
