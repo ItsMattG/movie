@@ -454,6 +454,7 @@ export default function LandingPage() {
 								<div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
 									<a className="link link-hover text-main-text">Login</a>
 									<a className="link link-hover text-main-text" onClick={(event) => handlePricingScroll(event, -280)}>Pricing</a>
+									<a className="link link-hover text-main-text" href="mailto:gleesonmatt96@gmail.com">Support</a>
 								</div>
 							</div>
 							<div className="lg:w-1/3 md:w-1/2 w-full px-4">
