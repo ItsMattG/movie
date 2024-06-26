@@ -30,12 +30,9 @@ export default function LandingPage() {
 		event.preventDefault();
 		const pricingElement = document.getElementById('pricing');
 		if (pricingElement) {
-			console.log('Scrolling to pricing element...');
 			pricingElement.scrollIntoView({ behavior: 'smooth' });
 			setTimeout(() => {
-				console.log('Adjusting scroll position...');
 				window.scrollBy(0, +padding);
-				console.log('Adjusted scroll position');
 			}, 500); // Adjust this delay as needed
 		}
 	};
@@ -44,12 +41,9 @@ export default function LandingPage() {
 		event.preventDefault();
 		const pricingElement = document.getElementById('faq');
 		if (pricingElement) {
-			console.log('Scrolling to pricing element...');
 			pricingElement.scrollIntoView({ behavior: 'smooth' });
 			setTimeout(() => {
-				console.log('Adjusting scroll position...');
 				window.scrollBy(0, +padding);
-				console.log('Adjusted scroll position');
 			}, 500); // Adjust this delay as needed
 		}
 	};

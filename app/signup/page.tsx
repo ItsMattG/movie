@@ -23,7 +23,6 @@ export default function SignUp() {
 		if (error) {
 			console.error('Error signing up:', error.message);
 		} else {
-			console.log('User signed up:', user);
 
 			// Send welcome email
 			await fetch('/api/email', {

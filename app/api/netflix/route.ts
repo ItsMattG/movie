@@ -6,14 +6,12 @@ export async function POST(request: Request, csvFilePath: string): Promise<Respo
 	try {
 		// Parse the request body to get primeData
 		const { netflixData } = await request.json();
-		console.log('asdasd')
 		// Read the CSV file using csv-parser
 		const data: any[] = [];
 		await new Promise<void>((resolve, reject) => {
 			require('stream').Readable.from(netflixData)
 				.pipe(csvParser())
 				.on('data', (row: any) => {
-					console.log('row', row)
 					data.push(row);
 				})
 				.on('end', () => {

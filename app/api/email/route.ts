@@ -13,7 +13,6 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
         `;
 
 				const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-console.log('body', body)
 if (!emailRegex.test(body.email)) {
 	    return new Response("Invalid email address", {
         status: 400
@@ -27,7 +26,6 @@ if (!emailRegex.test(body.email)) {
         //     text: message,
         //     html: message.replace(/\r\n/g, '<br>'),
         // });
-	console.log('wow', res)
 	    return new Response("Ok", {
         status: 200
     })

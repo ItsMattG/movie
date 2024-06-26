@@ -18,11 +18,8 @@ const Upload: React.FC = () => {
 	const handleInstructionsModalOpen = () => {
 		setIsInstructionsModalOpen(true);
 	};
-	console.log('pspdf')
 	useEffect(() => {
-		console.log('arar')
 		setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
-		console.log('arardfsdfsf')
 		const storedFileNames = localStorage.getItem('fileNames');
 		if (storedFileNames) {
 				const fileNamesArray = JSON.parse(storedFileNames);
@@ -42,9 +39,7 @@ const Upload: React.FC = () => {
 			reader.onload = function(e) {
 				if (e.target) {
 					try {
-						console.log('ofsoiufd')
 						localStorage.setItem(`${service}UploadedFile`, e.target.result as string);
-						console.log('ofsoiufdasdasdasd')
 						localStorage.setItem(`${service}FileUploadedFlag`, 'true');
 						setUploadSuccess(true);
 						setIsLocalStorageEmpty(!(typeof window !== 'undefined' && window.localStorage && window.localStorage.length > 1));
